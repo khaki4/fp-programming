@@ -103,6 +103,7 @@ const find = curry((f, iter) => go(
 
 // L.map
 L.map = curry(function* (f, iter) {
+  debugger;
   for (const a of iter) {
     yield f(a);
   }

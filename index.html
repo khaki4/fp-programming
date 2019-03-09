@@ -9,35 +9,41 @@
 <body>
 <script src="./lib.js"></script>
 <script>
-  const users = [
-    { age: 32 },
-    { age: 12 },
-    { age: 42 },
-    { age: 16 },
-    { age: 24 },
-    { age: 17 },
-    { age: 29 },
-  ];
-  const add = (a, b) => a + b;
+  // const users = [
+  //   { age: 32 },
+  //   { age: 12 },
+  //   { age: 42 },
+  //   { age: 16 },
+  //   { age: 24 },
+  //   { age: 17 },
+  //   { age: 29 },
+  // ];
+  // const add = (a, b) => a + b;
+  //
+  // const a = () => go(
+  //   range(200),
+  //   map(v => v + 1),
+  //   filter(v => v < 20),
+  //   find(v => v > 12)
+  // );
+  //
+  // const b = () => go(
+  //   range(200),
+  //   L.map(v => v + 1),
+  //   L.filter(v => v < 20),
+  //   find(v => v > 12)
+  // )
+  //
+  //
+  //
+  // test('a', 10000, a);
+  // test('b', 10000, b);
 
-  const a = () => go(
-    range(200),
-    map(v => v + 1),
-    filter(v => v < 20),
-    find(v => v > 12)
-  );
-
-  const b = () => go(
-    range(200),
-    L.map(v => v + 1),
-    L.filter(v => v < 20),
-    find(v => v > 12)
-  )
-
-
-
-  test('a', 10000, a);
-  test('b', 10000, b);
+    go(
+      L.range(100),
+      L.map(v => v + 1),
+      take(3),
+    )
 
 </script>
 </body>
