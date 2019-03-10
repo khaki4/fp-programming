@@ -1,26 +1,48 @@
 # 값(Expression) 이란 무엇일까?
 - 함수가 값으로 활용 된다는 것은 무엇일까?
 - 상태를 값으로 표현하는 의미
-
+- [1, 2, 3, 4]
+- [f, f, f, f]
+- [\<Suspended>, \<Suspended>, \<Suspended>, \<Suspended>]
 ## 최종목표 
+
+1. 리스트를 순회할 때마다 필요한 값을 생성한다. 
+2. 필요한 순간 값을 생성하는 것은 함수를 통해 가능하다.
+3. es6에서 리스트 순회시 사용하는 for...of 문은 Iterable의 next()를 호출하여 값을 생성한다.
+4. Genrator를 통하여 Iterable 의 next()을 호출하여 가져오는 값의 형태를 설정할 수 있다.
+5. Iterable을 인자로 받는 함수를 Generator를 이용하여 만든다.
+6. Generator를 이용하여 만든 함수를 합성한다.
+7. 합성된 함수에 원하는 데이터를 입력한다.
+
+---
 
 실무에서 Data(Collection) 를 순회함에 있어 
 
-    Data.map(predicate).filter(predicate).find(predicate) 
+    Data.map(predicate).filter(predicate).find(predicate) // 시간복잡도가 좋지않음
     
 혹은
 
-    for(...) {
-       a = mapping(_data);
-       b = filtering(a);
-       c = find(b);
-       if (c) break;
+    for(let i = 0; i < Data.length; i++) {
+       function getWhatIWant(_data) {
+         ...여러가지 조건의 복합체
+         분리가 힘들다.
+       }
+       
+       getWhatIWant(Data[i]);
     }
 
 와 같은 형식으로 데이터 조회를 하는데 이는 N개의 길이를 가진 콜렉션을 3번 순회하는 셈이 된다. 이를 아래와 같이 함수의 지연연산을 통해 효율적인 순회를 하록 하는것이 목적이다.
-
-    [find(filter(map(find[0]))), find(filter(map(find[1]))), find(filter(map(data[2])))....]
-
+    
+    for(let i = 0; i < Data.length; i++) {
+       isItWhatIWant? (filtering(mapping(Data[0])))
+    }
+    
+--- 
+    
+    [(filtering(mapping(Data[0]))),
+     (filtering(mapping(Data[1]))), 
+     (filtering(mapping(Data[2])))....]
+                .find(isItWhatIWant)        
 또한 재활용성을 위해 아래의 모습으로 각 함수를 모듈화 하고 그 모듈의 합성을 쉽게 하는 방법을 만드는 것이 최종 목표이다.
 
     pipe(

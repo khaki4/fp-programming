@@ -7,50 +7,25 @@
     <title>Document</title>
 </head>
 <body>
-<script src="./lib.js"></script>
+<script src="./fp.js"></script>
 <script>
-  // const users = [
-  //   { age: 32 },
-  //   { age: 12 },
-  //   { age: 42 },
-  //   { age: 16 },
-  //   { age: 24 },
-  //   { age: 17 },
-  //   { age: 29 },
-  // ];
-  const add = (a, b) => a + b;
-  //
-  // const a = () => go(
-  //   range(200),
-  //   map(v => v + 1),
-  //   filter(v => v < 20),
-  //   find(v => v > 12)
-  // );
-  //
-  // const b = () => go(
-  //   range(200),
-  //   L.map(v => v + 1),
-  //   L.filter(v => v < 20),
-  //   find(v => v > 12)
-  // )
-  //
-  //
-  //
-  // test('a', 10000, a);
-  // test('b', 10000, b);
+  const a = () => go(
+    range(10000),
+    map(v => v + 1),
+    filter(v => v < 20),
+    find(v => v > 12)
+  );
 
-    go(
-      L.range(100),
-      L.map(v => v + 1),
-      L.filter(v => v < 4),
-      find(v => v === 3),
-      log
-    );
+  const b = () => go(
+    L.range(10000),
+    L.map(v => v + 1),
+    list => L.map(v => v + 1, list),
+    list => L.filter(v => v < 20, list),
+    list => find(v => v > 12, list)
+  );
 
-
-
-
-
+  test('a', 1000, a);
+  test('b', 1000, b);
 </script>
 </body>
 </html>
