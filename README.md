@@ -1,3 +1,33 @@
+## 최종목표 
+
+실무에서 Data(Collection) 를 순회함에 있어 
+
+    Data.map(predicate).filter(predicate).find(predicate) 
+    
+혹은
+
+    for(...) {
+       a = mapping(_data);
+       b = filtering(a);
+       c = find(b);
+       if (c) break;
+    }
+
+와 같은 형식으로 데이터 조회를 하는데 이는 N개의 길이를 가진 콜렉션을 3번 순회하는 셈이 된다. 이를 아래와 같이 함수의 지연연산을 통해 효율적인 순회를 하록 하는것이 목적이다.
+
+    [find(filter(map(find[0]))), find(filter(map(find[1]))), find(filter(map(data[2])))....]
+
+또한 재활용성을 위해 아래의 모습으로 각 함수를 모듈화 하고 그 모듈의 합성을 쉽게 하는 방법을 만드는 것이 최종 목표이다.
+
+    pipe(
+      Data,
+      map(predicate),
+      filter(predicate),
+      find(predicate)
+    )
+
+
+
 ## 성공적인 프로그래밍을 위하여
 - 모든 프로그래밍 패러다임은 성공적인 프로그래밍을 위해 존재한다.
 - 성공적인 프로그래밍은 좋은 프로그램을 만드는 일이다.
@@ -7,7 +37,7 @@
 ## 함수형 프로그래밍
 성공적인 프로그래밍을 위해 부수 효과(side effect)를 지양하고 조합성을 강조하는 프로그래밍 패러다임이다.
 
-- 부수효과를 지양한다 => 순수함수를 만든다.
+- 부수효과를 지양한다 => 순수함수(Pure Function)를 만든다.
 - 조합성을 강조한다 => 모듈화 수준을 높인다.
 - 순수 함수 => 오류를 줄이고 안정성을 높인다.
 - 모듈화 수준이 높다 => 생산성을 높인다.
@@ -61,4 +91,4 @@
 [[mapping, filtering, mapping], [mapping, filtering, mapping]]
 
 
-
+---

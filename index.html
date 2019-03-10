@@ -18,7 +18,7 @@
   //   { age: 17 },
   //   { age: 29 },
   // ];
-  // const add = (a, b) => a + b;
+  const add = (a, b) => a + b;
   //
   // const a = () => go(
   //   range(200),
@@ -42,8 +42,14 @@
     go(
       L.range(100),
       L.map(v => v + 1),
-      take(3),
-    )
+      L.filter(v => v < 4),
+      find(v => v === 3),
+      log
+    );
+
+
+
+
 
 </script>
 </body>

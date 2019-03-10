@@ -28,13 +28,18 @@ const filter = curry((f, iter) => {
 
 const reduce = curry((f, acc, iter) => {
   // (f, iter) 만 있을 경우 3번째 값이 없는 경우 이므로
+
+  const _iter = acc[Symbol.iterator]();
   if (!iter) {
-    iter = acc[Symbol.iterator]();
-    acc = iter.next().value;
+    acc = _iter.next().value;
   }
-  for (const a of iter) {
+
+  let cur;
+  while (!(cur = _iter.next()).done) {
+    const a = cur.value;
     acc = f(acc, a);
   }
+
   return acc;
 });
 
@@ -74,7 +79,10 @@ const test = (name, times, f) => {
 // take
 const take = curry((l, iter) => {
   let res = [];
-  for (const a of iter) {
+  iter = iter[Symbol.iterator]();
+  let cur;
+  while (!(cur = iter.next()).done) {
+    const a = cur.value;
     res.push(a);
     if (res.length === l) break;
   }
@@ -103,15 +111,20 @@ const find = curry((f, iter) => go(
 
 // L.map
 L.map = curry(function* (f, iter) {
-  debugger;
-  for (const a of iter) {
+  iter = iter[Symbol.iterator]();
+  let cur;
+  while (!(cur = iter.next()).done) {
+    const a = cur.value;
     yield f(a);
   }
 });
 
 // L.filter
 L.filter = curry(function* (f, iter) {
-  for (const a of iter) {
+  iter = iter[Symbol.iterator]();
+  let cur;
+  while (!(cur = iter.next()).done) {
+    const a = cur.value;
     if (f(a)) yield a;
   }
 });
