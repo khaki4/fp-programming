@@ -1,18 +1,23 @@
 # 값(Expression) 이란 무엇일까?
 - 함수가 값으로 활용 된다는 것은 무엇일까?
-- 상태를 값으로 표현하는 의미
+- 상태를 값으로 표현하는 의미(statement -> Expression)
 - [1, 2, 3, 4]
 - [f, f, f, f]
 - [\<Suspended>, \<Suspended>, \<Suspended>, \<Suspended>]
 ## 최종목표 
 
-1. 리스트를 순회할 때마다 필요한 값을 생성한다. 
-2. 필요한 순간 값을 생성하는 것은 함수를 통해 가능하다.
-3. es6에서 리스트 순회시 사용하는 for...of 문은 Iterable의 next()를 호출하여 값을 생성한다.
-4. Genrator를 통하여 Iterable 의 next()을 호출하여 가져오는 값의 형태를 설정할 수 있다.
-5. Iterable을 인자로 받는 함수를 Generator를 이용하여 만든다.
-6. Generator를 이용하여 만든 함수를 합성한다.
-7. 합성된 함수에 원하는 데이터를 입력한다.
+1. 리스트를 순회할 때마다 필요한 값을 평가한다. 
+2. 필요한 순간 값을 평가하는 것은 함수를 통해 가능하다.
+3. 기존 es5까지의 순회는 for loop statement를 활용하였으므로 한번 실행하면 끝까지 멈출 수 없다.
+4. es6에서 리스트 순회시 사용하는 for...of 문은 Iterable의 next()를 호출하여 값을 평가한다.
+    - Iterable라는 값이 loop의 진행 상태를 가지고 있다는 것은 언어로서의 발전이다.(statement -> Expression)
+    - 비슷한 예로 비동기 상황에서의 callback function을 Promise로 대체하는 것이다.(statement -> Expression)  
+5. next()를 호출하여 값을 평가한다는 것은 값을 내가 원하는 시점에서 평가 할 수 있다는 의미를 가진다.
+6. 그말은 loop를 멈추고 진행하는 것을 컨트롤 할 수 있다는 것이다.
+7. loop의 진행 뿐아니라 loop의 현시점의 아이템도 Iterable을 받아 평가를 지연하자.
+8. 그 Iterable은 플로우를 문장형태(Statement)로 만들 수 있는 Generator를 활용하자.
+9. Generator를 이용하여 만든 함수를 합성한다.
+10. 합성된 함수에 원하는 데이터를 입력한다.
 
 ---
 
@@ -76,7 +81,7 @@
 
 <img src="./assets/ex1.png" width=300 />
 
-마이클 포거스 [클로저 프로그래밍의 증거움]에서
+마이클 포거스 [클로저 프로그래밍의 즐거움]에서
 
 ---
 
@@ -105,7 +110,7 @@
 - 느긋한 계산법
 - Generator/Iterator Protocal 기반으로 구현
 
-## map, filter 계열 함수가 가지는 결함 법칙
+## map, filter 계열 함수가 가지는 결합 법칙
 - 사용하는 데이터가 무엇이든지
 - 사용하는 보조 함수가 순수 함수라면 무엇이든지
 - 아래와 같이 결합한다면 둘 다 결과가 같다.
