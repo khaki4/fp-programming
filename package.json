@@ -7,8 +7,5 @@
   },
   "scripts": {
     "test": "jest"
-  },
-  "jest": {
-    "testRegex": "lib.test.js"
   }
 }

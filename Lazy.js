@@ -14,6 +14,7 @@ const curry = f => (a, ..._) => _.length
   ? f(a, ..._)
   : (..._) => f(a, ..._);
 
+const identify = a => a;
 
 
 /**
@@ -117,3 +118,12 @@ const pipe = (f, ...fs) => (...a) => go(f(...a), ...fs);
 
 
 
+module.exports = {
+  map,
+  filter,
+  reduce,
+  take,
+  find,
+  go,
+  L,
+};
