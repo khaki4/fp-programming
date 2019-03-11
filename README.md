@@ -124,3 +124,31 @@
 
 
 ---
+
+### 콜렉션 조회 예제
+```javascript
+  go(
+    range(100000),
+    map(item => item + 1),
+    filter(item => item < 10),
+    find(item => item === 3),
+    log
+  );
+```
+
+### 연산 속도 비교 예제
+```javscript
+const a = () => go(
+  range(100000),
+  map(item => item + 1),
+  filter(item => item < 10),
+  find(item => item === 3)
+);
+
+const b = () => go(
+  L.range(100000),
+  L.map(item => item + 1),
+  L.filter(item => item < 10),
+  find(item => item === 3)
+);
+```

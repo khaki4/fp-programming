@@ -117,13 +117,13 @@ const go = (...args) => reduce((a, f) => f(a), args)
 const pipe = (f, ...fs) => (...a) => go(f(...a), ...fs);
 
 
-
-module.exports = {
-  map,
-  filter,
-  reduce,
-  take,
-  find,
-  go,
-  L,
-};
+// test를 위해서는 주석 해제
+// module.exports = {
+//   map,
+//   filter,
+//   reduce,
+//   take,
+//   find,
+//   go,
+//   L,
+// };
