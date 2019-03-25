@@ -95,10 +95,15 @@ const reduce = curry((f, acc, iter) => {
   } else {
     iter = iter[Symbol.iterator]();
   }
-  for (const a of iter) {
-    acc = f(acc, a);
-  }
-  return acc;
+  return go1(acc, function recur(acc) {
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      acc = f(acc, a);
+      if (acc instanceof Promise) return acc.then(recur)
+    }
+    return acc;
+  });
 });
 
 /**
@@ -195,7 +200,14 @@ const f = ({ name }) => name;
 const g = getUserById;
 
 const fg = id => Promise.resolve(id).then(g).then(f).catch(a => a);
-users.pop();
-users.pop();
+// users.pop();
+// users.pop();
+// fg(2).then(log);
 
-fg(2).then(log);
+go(Promise.resolve(1),
+  a => a + 10,
+  a => Promise.reject('error~~'),
+  a => console.log('----'),
+  a => a + 1000,
+  a => a + 10000,
+  log).catch(a => console.log(a));
