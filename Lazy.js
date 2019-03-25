@@ -15,6 +15,14 @@ const curry = f => (a, ..._) => (_.length ? f(a, ..._) : (..._) => f(a, ..._));
 const identify = a => a;
 
 /**
+ * 함수 합성
+ *
+ *
+ */
+const go = (...args) => reduce((a, f) => f(a), args);
+const pipe = (f, ...fs) => (...a) => go(f(...a), ...fs);
+
+/**
  * Lazy
  *
  *
@@ -30,7 +38,7 @@ L.range = function* (l) {
 
 L.map = curry(function* (f, iter) {
   for (const a of iter) {
-    yield f(a);
+    yield go1(a, f);
   }
 });
 
@@ -48,11 +56,18 @@ L.filter = curry(function* (f, iter) {
 // take
 const take = curry((limit, iter) => {
   const res = [];
-  for (const a of iter) {
-    res.push(a);
-    if (res.length === limit) break;
-  }
-  return res;
+  iter = iter[Symbol.iterator]();
+  return function recur() {
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      if (a instanceof Promise) return a.then(a =>
+        (res.push(a), res).length === limit ? res : recur());
+      res.push(a);
+      if (res.length === limit) return res;
+    }
+    return res;
+  }();
 });
 
 const takeAll = take(Infinity);
@@ -67,22 +82,10 @@ const range = l => {
 };
 
 // 수집하기 map
-const map = curry((f, iter) => {
-  const res = [];
-  for (const a of iter) {
-    res.push(f(a));
-  }
-  return res;
-});
+const map = curry(pipe(L.map, takeAll));
 
 // 거르기 filter
-const filter = curry((f, iter) => {
-  const res = [];
-  for (const a of iter) {
-    if (f(a)) res.push(a);
-  }
-  return res;
-});
+const filter =  curry(pipe(L.filter, takeAll));
 
 // 찾기 find
 const find = curry((f, iter) => go(iter, L.filter(f), take(1), ([a]) => a));
@@ -106,13 +109,7 @@ const reduce = curry((f, acc, iter) => {
   });
 });
 
-/**
- * 함수 합성
- *
- *
- */
-const go = (...args) => reduce((a, f) => f(a), args);
-const pipe = (f, ...fs) => (...a) => go(f(...a), ...fs);
+
 
 // test를 위해서는 주석 해제
 // module.exports = {
@@ -204,10 +201,16 @@ const fg = id => Promise.resolve(id).then(g).then(f).catch(a => a);
 // users.pop();
 // fg(2).then(log);
 
-go(Promise.resolve(1),
-  a => a + 10,
-  a => Promise.reject('error~~'),
-  a => console.log('----'),
-  a => a + 1000,
-  a => a + 10000,
-  log).catch(a => console.log(a));
+// go(Promise.resolve(1),
+//   a => a + 10,
+//   a => Promise.reject('error~~'),
+//   a => console.log('----'),
+//   a => a + 1000,
+//   a => a + 10000,
+//   log).catch(a => console.log(a));
+
+go(
+  range(3),
+  L.map(a => Promise.resolve(a + 10)),
+  takeAll,
+  log);
